@@ -1,19 +1,27 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import core from '@actions/core';
+import parseEnv from './parseEnv';
+import forEach from 'lodash/forEach';
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const envPath = core.getInput('path');
+    const envExamplePath = core.getInput('example-path');
+    const variables = parseEnv(envPath, envExamplePath);
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.info(
+      `Loaded the following env variables: ${Object.keys(variables).join(
+        ', ',
+      )}`,
+    );
 
-    core.setOutput('time', new Date().toTimeString())
+    core.setOutput('generic', 'please check for actual outputs');
+
+    forEach(variables, function(value, key) {
+      core.setOutput(key, value);
+    });
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error.message);
   }
 }
 
-run()
+run();

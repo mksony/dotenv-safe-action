@@ -1,10 +1,20 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Dotenv Safe Action"
+description: "Load variables from .env file and ensure variables to be set from an .env.example"
+branding:
+  icon: play
+  color: green
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  path:
+    description: "the path to the .env file (including file name)"
+    required: true
+    default: ".env"
+  example-path:
+    description: "the path to the .env.example file (including file name)"
+    required: true
+    default: ".env.example"
+outputs:
+  generic:
+    description: "This command will have generic output variables based on .env"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
