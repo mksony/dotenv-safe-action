@@ -1,6 +1,6 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import dotenv from 'dotenv-safe';
-import core from '@actions/core';
+import * as core from '@actions/core';
 
 const parseEnv = (
   envPath: string,

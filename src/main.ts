@@ -1,4 +1,4 @@
-import core from '@actions/core';
+import * as core from '@actions/core';
 import parseEnv from './parseEnv';
 import forEach from 'lodash/forEach';
 

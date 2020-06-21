@@ -1,6 +1,6 @@
 import path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import core from '@actions/core';
+import * as core from '@actions/core';
 import parseEnv from './parseEnv';
 
 jest.mock('@actions/core', () => ({

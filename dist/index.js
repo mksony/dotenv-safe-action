@@ -423,31 +423,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = __importDefault(__webpack_require__(470));
+const core = __importStar(__webpack_require__(470));
 const parseEnv_1 = __importDefault(__webpack_require__(994));
 const forEach_1 = __importDefault(__webpack_require__(774));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const envPath = core_1.default.getInput('path');
-            const envExamplePath = core_1.default.getInput('example-path');
+            const envPath = core.getInput('path');
+            const envExamplePath = core.getInput('example-path');
             const variables = parseEnv_1.default(envPath, envExamplePath);
-            core_1.default.info(`Loaded the following env variables: ${Object.keys(variables).join(', ')}`);
-            core_1.default.setOutput('generic', 'please check for actual outputs');
-            const exportEnvs = core_1.default.getInput('export-envs');
+            core.info(`Loaded the following env variables: ${Object.keys(variables).join(', ')}`);
+            core.setOutput('generic', 'please check for actual outputs');
+            const exportEnvs = core.getInput('export-envs');
             forEach_1.default(variables, function (value, key) {
                 if (exportEnvs.toLowerCase() === 'true') {
-                    core_1.default.exportVariable(key, value);
+                    core.exportVariable(key, value);
                 }
-                core_1.default.setOutput(key, value);
+                core.setOutput(key, value);
             });
         }
         catch (error) {
-            core_1.default.setFailed(error.message);
+            core.setFailed(error.message);
         }
     });
 }
@@ -1819,20 +1826,27 @@ module.exports = isObject;
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = __importDefault(__webpack_require__(747));
+const fs = __importStar(__webpack_require__(747));
 const dotenv_safe_1 = __importDefault(__webpack_require__(245));
-const core_1 = __importDefault(__webpack_require__(470));
+const core = __importStar(__webpack_require__(470));
 const parseEnv = (envPath, examplePath) => {
-    if (!fs_1.default.existsSync(envPath)) {
+    if (!fs.existsSync(envPath)) {
         throw new Error('file does not exist');
     }
     const { parsed } = dotenv_safe_1.default.config({ path: envPath, example: examplePath });
-    core_1.default.info(`loading .env file from ${envPath}`);
-    core_1.default.info(`loading .env.example file from ${examplePath}`);
+    core.info(`loading .env file from ${envPath}`);
+    core.info(`loading .env.example file from ${examplePath}`);
     if (!parsed) {
         throw new Error('No env variables loaded');
     }
