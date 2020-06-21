@@ -15,8 +15,11 @@ async function run(): Promise<void> {
     );
 
     core.setOutput('generic', 'please check for actual outputs');
-
+    const exportEnvs = core.getInput('export-envs');
     forEach(variables, function(value, key) {
+      if (exportEnvs.toLowerCase() === 'true') {
+        core.exportVariable(key, value);
+      }
       core.setOutput(key, value);
     });
   } catch (error) {
