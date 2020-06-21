@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(198);
+/******/ 		return __webpack_require__(131);
 /******/ 	};
 /******/ 	// initialize runtime
 /******/ 	runtime(__webpack_require__);
@@ -304,6 +304,60 @@ module.exports = require("os");
 
 /***/ }),
 
+/***/ 131:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(470));
+const parseEnv_1 = __importDefault(__webpack_require__(476));
+const forEach_1 = __importDefault(__webpack_require__(774));
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const envPath = core.getInput('path');
+            const envExamplePath = core.getInput('example-path');
+            const variables = parseEnv_1.default(envPath, envExamplePath);
+            core.info(`Loaded the following env variables: ${Object.keys(variables).join(', ')}`);
+            core.setOutput('generic', 'please check for actual outputs');
+            const exportEnvs = core.getInput('export-envs');
+            forEach_1.default(variables, function (value, key) {
+                if (exportEnvs.toLowerCase() === 'true') {
+                    core.exportVariable(key, value);
+                }
+                core.setOutput(key, value);
+            });
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+run();
+
+
+/***/ }),
+
 /***/ 143:
 /***/ (function(module) {
 
@@ -405,60 +459,6 @@ function isIndex(value, length) {
 }
 
 module.exports = isIndex;
-
-
-/***/ }),
-
-/***/ 198:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
-const parseEnv_1 = __importDefault(__webpack_require__(994));
-const forEach_1 = __importDefault(__webpack_require__(774));
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const envPath = core.getInput('path');
-            const envExamplePath = core.getInput('example-path');
-            const variables = parseEnv_1.default(envPath, envExamplePath);
-            core.info(`Loaded the following env variables: ${Object.keys(variables).join(', ')}`);
-            core.setOutput('generic', 'please check for actual outputs');
-            const exportEnvs = core.getInput('export-envs');
-            forEach_1.default(variables, function (value, key) {
-                if (exportEnvs.toLowerCase() === 'true') {
-                    core.exportVariable(key, value);
-                }
-                core.setOutput(key, value);
-            });
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-run();
 
 
 /***/ }),
@@ -1149,6 +1149,42 @@ exports.getState = getState;
 
 /***/ }),
 
+/***/ 476:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = __importStar(__webpack_require__(747));
+const dotenv_safe_1 = __importDefault(__webpack_require__(245));
+const core = __importStar(__webpack_require__(470));
+const parseEnv = (envPath, examplePath) => {
+    if (!fs.existsSync(envPath)) {
+        throw new Error('file does not exist');
+    }
+    const { parsed } = dotenv_safe_1.default.config({ path: envPath, example: examplePath });
+    core.info(`loading .env file from ${envPath}`);
+    core.info(`loading .env.example file from ${examplePath}`);
+    if (!parsed) {
+        throw new Error('No env variables loaded');
+    }
+    return parsed;
+};
+exports.default = parseEnv;
+
+
+/***/ }),
+
 /***/ 498:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -1817,42 +1853,6 @@ function isObject(value) {
 }
 
 module.exports = isObject;
-
-
-/***/ }),
-
-/***/ 994:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = __importStar(__webpack_require__(747));
-const dotenv_safe_1 = __importDefault(__webpack_require__(245));
-const core = __importStar(__webpack_require__(470));
-const parseEnv = (envPath, examplePath) => {
-    if (!fs.existsSync(envPath)) {
-        throw new Error('file does not exist');
-    }
-    const { parsed } = dotenv_safe_1.default.config({ path: envPath, example: examplePath });
-    core.info(`loading .env file from ${envPath}`);
-    core.info(`loading .env.example file from ${examplePath}`);
-    if (!parsed) {
-        throw new Error('No env variables loaded');
-    }
-    return parsed;
-};
-exports.default = parseEnv;
 
 
 /***/ })
