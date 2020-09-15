@@ -346,6 +346,7 @@ function run() {
                     core.exportVariable(key, value);
                 }
                 core.setOutput(key, value);
+                core.setSecret(key);
             });
         }
         catch (error) {
