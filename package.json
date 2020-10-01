@@ -24,7 +24,7 @@
   "author": "YourNameOrOrganization",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0",
+    "@actions/core": "^1.2.6",
     "dotenv-safe": "^8.2.0",
     "lodash": "^4.17.15"
   },
